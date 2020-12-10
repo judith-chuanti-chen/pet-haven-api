@@ -115,7 +115,11 @@ userSchema.statics.findByToken = function(token, callback){
     let user = this; //this refer to User model
     jwt.verify(token, config.SECRET, (err, decode) =>{
         user.findOne({"_id": decode, "token": token}, (err, user)=>{
-            if(err) return callback(err);
+            if(err)  {
+                console.log("models/user.js - findByToken err: " + err);
+                return callback(err);
+            }
+            console.log('findByToken user'+ user);
             callback(null, user);
         })
     })

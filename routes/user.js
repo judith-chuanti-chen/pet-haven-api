@@ -41,6 +41,7 @@ router.post('/login',(req,res)=>{
            user.generateToken((err,user)=>{
                 if(err) return res.status(400).send(err);
                 //Cookie contains key-value pairs: {"auth": user.token}
+                console.log("/login generateToken: " + user.token);
                 res.cookie('auth',user.token).json({
                     auth:true,
                     userData: {
@@ -78,8 +79,9 @@ router.get('/auth', auth, (req, res)=>{
 // GET /api/users/logout
 router.get('/logout', auth, (req, res) => {
     req.user.deleteToken(req.token, (err, user) => {
+        console.log('/logout: ' + req.token)
         if(err) {
-            console.log(err);
+            console.log("logout err" + err);
             return res.status(400).send(err);
         }
         res.status(200).send('goodbye');

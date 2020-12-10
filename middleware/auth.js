@@ -5,13 +5,16 @@ const { User } = require('../models/user');
 //If it checks out, access is granted.
 let auth = (req, res, next) => {
     let token = req.cookies.auth;
-
+    
     User.findByToken(token, (err, user) => {
         if(err) throw err;
-        if(!user) return res.send('token validation failed');
-
+        if(!user) {
+            console.log('token validation failed', token);
+            return res.send('token validation failed');
+        }
         req.token = token;
         req.user = user;
+        console.log("auth middleware, req.user" + req.user);
         next();
     });
 };
